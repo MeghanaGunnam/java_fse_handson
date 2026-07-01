@@ -1,0 +1,445 @@
+
+# Exercise 1: Setting Up JUnit
+
+## Step 1: Create Java Project
+
+Create a Java project in IntelliJ IDEA or Eclipse.
+
+Project Name:
+
+```text
+JUnitDemo
+```
+
+---
+
+## Step 2: Add JUnit Dependency
+
+### Maven (JUnit 4)
+
+```xml
+<dependencies>
+
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+    </dependency>
+
+</dependencies>
+```
+
+---
+
+## Step 3: Create Test Class
+
+```java
+import org.junit.Test;
+
+public class CalculatorTest {
+
+    @Test
+    public void testAddition() {
+
+    }
+
+}
+```
+
+---
+
+# Exercise 2: Writing Basic JUnit Tests
+
+## Calculator.java
+
+```java
+public class Calculator {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+    public int subtract(int a, int b) {
+        return a - b;
+    }
+
+}
+```
+
+---
+
+## CalculatorTest.java
+
+```java
+import static org.junit.Assert.*;
+import org.junit.Test;
+
+public class CalculatorTest {
+
+    Calculator calculator = new Calculator();
+
+    @Test
+    public void testAdd() {
+
+        assertEquals(10, calculator.add(7,3));
+
+    }
+
+    @Test
+    public void testSubtract() {
+
+        assertEquals(4, calculator.subtract(10,6));
+
+    }
+
+}
+```
+
+---
+
+# Exercise 3: Assertions in JUnit
+
+```java
+import static org.junit.Assert.*;
+import org.junit.Test;
+
+public class AssertionsTest {
+
+    @Test
+    public void testAssertions() {
+
+        assertEquals(5,2+3);
+
+        assertTrue(10>5);
+
+        assertFalse(5>10);
+
+        assertNull(null);
+
+        assertNotNull(new Object());
+
+    }
+
+}
+```
+
+---
+
+# Exercise 4: Arrange-Act-Assert (AAA) Pattern
+
+## Calculator.java
+
+```java
+public class Calculator {
+
+    public int multiply(int a,int b){
+
+        return a*b;
+
+    }
+
+}
+```
+
+---
+
+## CalculatorTest.java
+
+```java
+import org.junit.*;
+
+import static org.junit.Assert.*;
+
+public class CalculatorTest {
+
+    Calculator calculator;
+
+    @Before
+    public void setup(){
+
+        calculator = new Calculator();
+
+        System.out.println("Setup");
+
+    }
+
+    @After
+    public void teardown(){
+
+        System.out.println("Teardown");
+
+    }
+
+    @Test
+    public void testMultiply(){
+
+        // Arrange
+        int a=5;
+        int b=4;
+
+        // Act
+        int result=calculator.multiply(a,b);
+
+        // Assert
+        assertEquals(20,result);
+
+    }
+
+}
+```
+
+---
+
+# Advanced JUnit Exercises
+
+# Exercise 1: Parameterized Tests (JUnit 5)
+
+## EvenChecker.java
+
+```java
+public class EvenChecker {
+
+    public boolean isEven(int number){
+
+        return number%2==0;
+
+    }
+
+}
+```
+
+---
+
+## EvenCheckerTest.java
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class EvenCheckerTest {
+
+    EvenChecker checker=new EvenChecker();
+
+    @ParameterizedTest
+
+    @ValueSource(ints={2,4,6,8,10})
+
+    void testEvenNumbers(int number){
+
+        assertTrue(checker.isEven(number));
+
+    }
+
+}
+```
+
+---
+
+# Exercise 2: Test Suites
+
+## Test Class 1
+
+```java
+import org.junit.Test;
+
+public class CalculatorTest {
+
+    @Test
+    public void testAdd(){
+
+        System.out.println("Addition Test");
+
+    }
+
+}
+```
+
+---
+
+## Test Class 2
+
+```java
+import org.junit.Test;
+
+public class EvenCheckerTest {
+
+    @Test
+    public void testEven(){
+
+        System.out.println("Even Test");
+
+    }
+
+}
+```
+
+---
+
+## AllTests.java (JUnit 5)
+
+```java
+import org.junit.platform.suite.api.SelectClasses;
+import org.junit.platform.suite.api.Suite;
+
+@Suite
+
+@SelectClasses({
+
+        CalculatorTest.class,
+        EvenCheckerTest.class
+
+})
+
+public class AllTests {
+
+}
+```
+
+---
+
+# Exercise 3: Test Execution Order
+
+```java
+import org.junit.jupiter.api.*;
+
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+
+public class OrderedTests {
+
+    @Test
+
+    @Order(1)
+
+    void login(){
+
+        System.out.println("Login");
+
+    }
+
+    @Test
+
+    @Order(2)
+
+    void search(){
+
+        System.out.println("Search");
+
+    }
+
+    @Test
+
+    @Order(3)
+
+    void logout(){
+
+        System.out.println("Logout");
+
+    }
+
+}
+```
+
+---
+
+# Exercise 4: Exception Testing
+
+## ExceptionThrower.java
+
+```java
+public class ExceptionThrower {
+
+    public void throwException(){
+
+        throw new ArithmeticException("Divide by Zero");
+
+    }
+
+}
+```
+
+---
+
+## ExceptionThrowerTest.java
+
+```java
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ExceptionThrowerTest {
+
+    ExceptionThrower obj=new ExceptionThrower();
+
+    @Test
+
+    void testException(){
+
+        assertThrows(
+
+                ArithmeticException.class,
+
+                ()->obj.throwException()
+
+        );
+
+    }
+
+}
+```
+
+---
+
+# Exercise 5: Timeout and Performance Testing
+
+## PerformanceTester.java
+
+```java
+public class PerformanceTester {
+
+    public void performTask(){
+
+        for(int i=0;i<1000000;i++){
+
+            Math.sqrt(i);
+
+        }
+
+    }
+
+}
+```
+
+---
+
+## PerformanceTesterTest.java
+
+```java
+import org.junit.jupiter.api.Test;
+
+import java.time.Duration;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class PerformanceTesterTest {
+
+    PerformanceTester tester=new PerformanceTester();
+
+    @Test
+
+    void testPerformance(){
+
+        assertTimeout(
+
+                Duration.ofSeconds(2),
+
+                ()->tester.performTask()
+
+        );
+
+    }
+
+}
+                                            
