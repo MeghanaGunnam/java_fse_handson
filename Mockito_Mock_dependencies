@@ -1,0 +1,180 @@
+
+
+# Exercise 1: Mocking a Service Dependency in a Controller Test
+
+## UserControllerTest.java
+
+```java
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(UserController.class)
+
+public class UserControllerTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
+
+    @Test
+    void testGetUser() throws Exception {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("John");
+
+        when(userService.getUserById(1L))
+                .thenReturn(user);
+
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("John"));
+    }
+}
+```
+
+---
+
+# Exercise 2: Mocking a Repository in a Service Test
+
+## UserServiceTest.java
+
+```java
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+
+public class UserServiceTest {
+
+    @Mock
+    private UserRepository userRepository;
+
+    @InjectMocks
+    private UserService userService;
+
+    @Test
+    void testGetUserById() {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("Alice");
+
+        when(userRepository.findById(1L))
+                .thenReturn(Optional.of(user));
+
+        User result = userService.getUserById(1L);
+
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("Alice", result.getName());
+
+        verify(userRepository).findById(1L);
+    }
+}
+```
+
+---
+
+# Exercise 3: Mocking a Service Dependency in an Integration Test
+
+## UserIntegrationTest.java
+
+```java
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+
+import org.springframework.boot.test.context.SpringBootTest;
+
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@SpringBootTest
+
+@AutoConfigureMockMvc
+
+public class UserIntegrationTest {
+
+    @Autowired
+    private MockMvc mockMvc;
+
+    @MockBean
+    private UserService userService;
+
+    @Test
+    void testGetUserIntegration() throws Exception {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("David");
+
+        when(userService.getUserById(1L))
+                .thenReturn(user);
+
+        mockMvc.perform(get("/users/1"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(1))
+                .andExpect(jsonPath("$.name").value("David"));
+
+        verify(userService).getUserById(1L);
+    }
+}
+```
+
+---
+
+# Required Maven Dependencies
+
+```xml
+<dependencies>
+
+    <!-- Spring Boot Test -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+    <!-- Mockito -->
+    <dependency>
+        <groupId>org.mockito</groupId>
+        <artifactId>mockito-core</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+</dependencies>
