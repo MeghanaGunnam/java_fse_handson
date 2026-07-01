@@ -1,0 +1,804 @@
+
+# Exercise 1: Control Structures
+
+## Scenario 1: Apply 1% Discount to Loan Interest Rates for Customers Above 60
+
+```sql
+DECLARE
+    CURSOR c_customers IS
+        SELECT CustomerID, DOB FROM Customers;
+    v_age NUMBER;
+BEGIN
+    FOR cust IN c_customers LOOP
+        v_age := FLOOR(MONTHS_BETWEEN(SYSDATE, cust.DOB) / 12);
+
+        IF v_age > 60 THEN
+            UPDATE Loans
+            SET InterestRate = InterestRate - 1
+            WHERE CustomerID = cust.CustomerID;
+        END IF;
+    END LOOP;
+
+    COMMIT;
+END;
+/
+```
+
+---
+
+## Scenario 2: Promote Customers to VIP
+
+```sql
+BEGIN
+    FOR cust IN (SELECT CustomerID, Balance FROM Customers) LOOP
+        IF cust.Balance > 10000 THEN
+            UPDATE Customers
+            SET IsVIP = 'Y'
+            WHERE CustomerID = cust.CustomerID;
+        END IF;
+    END LOOP;
+
+    COMMIT;
+END;
+/
+```
+
+---
+
+## Scenario 3: Loan Reminder
+
+```sql
+BEGIN
+    FOR loan IN (
+        SELECT c.Name, l.EndDate
+        FROM Customers c
+        JOIN Loans l
+        ON c.CustomerID = l.CustomerID
+        WHERE l.EndDate BETWEEN SYSDATE AND SYSDATE + 30
+    ) LOOP
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Reminder: Loan due for '
+            || loan.Name ||
+            ' on '
+            || loan.EndDate
+        );
+
+    END LOOP;
+END;
+/
+```
+
+---
+
+# Exercise 2: Error Handling
+
+## Scenario 1: SafeTransferFunds
+
+```sql
+CREATE OR REPLACE PROCEDURE SafeTransferFunds(
+    p_from NUMBER,
+    p_to NUMBER,
+    p_amount NUMBER
+)
+IS
+    v_balance NUMBER;
+BEGIN
+
+    SELECT Balance
+    INTO v_balance
+    FROM Accounts
+    WHERE AccountID = p_from;
+
+    IF v_balance < p_amount THEN
+        RAISE_APPLICATION_ERROR(-20001,'Insufficient Balance');
+    END IF;
+
+    UPDATE Accounts
+    SET Balance = Balance - p_amount
+    WHERE AccountID = p_from;
+
+    UPDATE Accounts
+    SET Balance = Balance + p_amount
+    WHERE AccountID = p_to;
+
+    COMMIT;
+
+EXCEPTION
+
+WHEN OTHERS THEN
+    ROLLBACK;
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+
+END;
+/
+```
+
+---
+
+## Scenario 2: UpdateSalary
+
+```sql
+CREATE OR REPLACE PROCEDURE UpdateSalary(
+    p_empid NUMBER,
+    p_percent NUMBER
+)
+IS
+BEGIN
+
+    UPDATE Employees
+    SET Salary = Salary + (Salary*p_percent/100)
+    WHERE EmployeeID = p_empid;
+
+    IF SQL%ROWCOUNT=0 THEN
+        RAISE NO_DATA_FOUND;
+    END IF;
+
+    COMMIT;
+
+EXCEPTION
+
+WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('Employee not found.');
+
+WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+
+END;
+/
+```
+
+---
+
+## Scenario 3: AddNewCustomer
+
+```sql
+CREATE OR REPLACE PROCEDURE AddNewCustomer(
+
+    p_id NUMBER,
+    p_name VARCHAR2,
+    p_dob DATE,
+    p_balance NUMBER
+
+)
+IS
+
+BEGIN
+
+    INSERT INTO Customers
+    VALUES(
+        p_id,
+        p_name,
+        p_dob,
+        p_balance,
+        SYSDATE
+    );
+
+    COMMIT;
+
+EXCEPTION
+
+WHEN DUP_VAL_ON_INDEX THEN
+    DBMS_OUTPUT.PUT_LINE('Customer already exists.');
+
+WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE(SQLERRM);
+
+END;
+/
+```
+
+---
+
+# Exercise 3: Stored Procedures
+
+## Scenario 1: ProcessMonthlyInterest
+
+```sql
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest
+IS
+BEGIN
+
+    UPDATE Accounts
+    SET Balance = Balance + (Balance*0.01)
+    WHERE AccountType='Savings';
+
+    COMMIT;
+
+END;
+/
+```
+
+---
+
+## Scenario 2: UpdateEmployeeBonus
+
+```sql
+CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus(
+
+    p_department VARCHAR2,
+    p_bonus NUMBER
+
+)
+IS
+BEGIN
+
+    UPDATE Employees
+    SET Salary = Salary + (Salary*p_bonus/100)
+    WHERE Department = p_department;
+
+    COMMIT;
+
+END;
+/
+```
+
+---
+
+## Scenario 3: TransferFunds
+
+```sql
+CREATE OR REPLACE PROCEDURE TransferFunds(
+
+    p_from NUMBER,
+    p_to NUMBER,
+    p_amount NUMBER
+
+)
+IS
+
+    v_balance NUMBER;
+
+BEGIN
+
+    SELECT Balance
+    INTO v_balance
+    FROM Accounts
+    WHERE AccountID=p_from;
+
+    IF v_balance<p_amount THEN
+        DBMS_OUTPUT.PUT_LINE('Insufficient Balance');
+
+    ELSE
+
+        UPDATE Accounts
+        SET Balance=Balance-p_amount
+        WHERE AccountID=p_from;
+
+        UPDATE Accounts
+        SET Balance=Balance+p_amount
+        WHERE AccountID=p_to;
+
+        COMMIT;
+
+    END IF;
+
+END;
+/
+```
+
+---
+
+# Exercise 4: Functions
+
+## Scenario 1: CalculateAge
+
+```sql
+CREATE OR REPLACE FUNCTION CalculateAge(
+
+    p_dob DATE
+
+)
+RETURN NUMBER
+IS
+BEGIN
+
+    RETURN FLOOR(MONTHS_BETWEEN(SYSDATE,p_dob)/12);
+
+END;
+/
+```
+
+---
+
+## Scenario 2: CalculateMonthlyInstallment
+
+```sql
+CREATE OR REPLACE FUNCTION CalculateMonthlyInstallment(
+
+    p_amount NUMBER,
+    p_rate NUMBER,
+    p_years NUMBER
+
+)
+RETURN NUMBER
+IS
+BEGIN
+
+    RETURN (p_amount + (p_amount*p_rate*p_years/100))
+            /(p_years*12);
+
+END;
+/
+```
+
+---
+
+## Scenario 3: HasSufficientBalance
+
+```sql
+CREATE OR REPLACE FUNCTION HasSufficientBalance(
+
+    p_account NUMBER,
+    p_amount NUMBER
+
+)
+RETURN BOOLEAN
+IS
+
+    v_balance NUMBER;
+
+BEGIN
+
+    SELECT Balance
+    INTO v_balance
+    FROM Accounts
+    WHERE AccountID=p_account;
+
+    RETURN v_balance>=p_amount;
+
+END;
+/
+```
+
+---
+
+# Exercise 5: Triggers
+
+## Scenario 1: Update Last Modified
+
+```sql
+CREATE OR REPLACE TRIGGER UpdateCustomerLastModified
+
+BEFORE UPDATE
+ON Customers
+
+FOR EACH ROW
+
+BEGIN
+
+    :NEW.LastModified:=SYSDATE;
+
+END;
+/
+```
+
+---
+
+## Scenario 2: LogTransaction
+
+First create AuditLog table.
+
+```sql
+CREATE TABLE AuditLog(
+
+LogID NUMBER GENERATED BY DEFAULT AS IDENTITY,
+
+TransactionID NUMBER,
+
+ActionDate DATE,
+
+Description VARCHAR2(100)
+
+);
+```
+
+Trigger:
+
+```sql
+CREATE OR REPLACE TRIGGER LogTransaction
+
+AFTER INSERT
+ON Transactions
+
+FOR EACH ROW
+
+BEGIN
+
+INSERT INTO AuditLog(
+
+TransactionID,
+ActionDate,
+Description
+
+)
+
+VALUES(
+
+:NEW.TransactionID,
+SYSDATE,
+'Transaction Added'
+
+);
+
+END;
+/
+```
+
+---
+
+## Scenario 3: CheckTransactionRules
+
+```sql
+CREATE OR REPLACE TRIGGER CheckTransactionRules
+
+BEFORE INSERT
+ON Transactions
+
+FOR EACH ROW
+
+DECLARE
+
+v_balance NUMBER;
+
+BEGIN
+
+SELECT Balance
+INTO v_balance
+FROM Accounts
+WHERE AccountID=:NEW.AccountID;
+
+IF :NEW.TransactionType='Withdrawal'
+AND :NEW.Amount>v_balance THEN
+
+RAISE_APPLICATION_ERROR(-20001,'Insufficient Balance');
+
+END IF;
+
+IF :NEW.TransactionType='Deposit'
+AND :NEW.Amount<=0 THEN
+
+RAISE_APPLICATION_ERROR(-20002,'Deposit must be positive');
+
+END IF;
+
+END;
+/
+```
+
+---
+
+# Exercise 6: Cursors
+
+## Scenario 1: Generate Monthly Statements
+
+```sql
+DECLARE
+
+CURSOR c1 IS
+
+SELECT *
+
+FROM Transactions
+
+WHERE TO_CHAR(TransactionDate,'MMYYYY')
+=
+TO_CHAR(SYSDATE,'MMYYYY');
+
+BEGIN
+
+FOR rec IN c1 LOOP
+
+DBMS_OUTPUT.PUT_LINE(
+
+'Transaction ID: '
+||
+rec.TransactionID
+||
+' Amount: '
+||
+rec.Amount
+
+);
+
+END LOOP;
+
+END;
+/
+```
+
+---
+
+## Scenario 2: Apply Annual Fee
+
+```sql
+DECLARE
+
+CURSOR c1 IS
+
+SELECT AccountID
+
+FROM Accounts;
+
+BEGIN
+
+FOR rec IN c1 LOOP
+
+UPDATE Accounts
+
+SET Balance=Balance-100
+
+WHERE AccountID=rec.AccountID;
+
+END LOOP;
+
+COMMIT;
+
+END;
+/
+```
+
+---
+
+## Scenario 3: Update Loan Interest Rates
+
+```sql
+DECLARE
+
+CURSOR c1 IS
+
+SELECT LoanID,InterestRate
+
+FROM Loans;
+
+BEGIN
+
+FOR rec IN c1 LOOP
+
+UPDATE Loans
+
+SET InterestRate=rec.InterestRate+0.5
+
+WHERE LoanID=rec.LoanID;
+
+END LOOP;
+
+COMMIT;
+
+END;
+/
+```
+
+---
+
+# Exercise 7: Packages
+
+## Scenario 1: CustomerManagement
+
+```sql
+CREATE OR REPLACE PACKAGE CustomerManagement IS
+
+PROCEDURE AddCustomer(
+id NUMBER,
+name VARCHAR2,
+dob DATE,
+bal NUMBER
+);
+
+PROCEDURE UpdateCustomer(
+id NUMBER,
+name VARCHAR2
+);
+
+FUNCTION GetBalance(
+id NUMBER
+)
+RETURN NUMBER;
+
+END CustomerManagement;
+/
+```
+
+```sql
+CREATE OR REPLACE PACKAGE BODY CustomerManagement IS
+
+PROCEDURE AddCustomer(id NUMBER,name VARCHAR2,dob DATE,bal NUMBER)
+
+IS
+
+BEGIN
+
+INSERT INTO Customers
+VALUES(id,name,dob,bal,SYSDATE);
+
+END;
+
+PROCEDURE UpdateCustomer(id NUMBER,name VARCHAR2)
+
+IS
+
+BEGIN
+
+UPDATE Customers
+SET Name=name
+WHERE CustomerID=id;
+
+END;
+
+FUNCTION GetBalance(id NUMBER)
+
+RETURN NUMBER
+
+IS
+
+bal NUMBER;
+
+BEGIN
+
+SELECT Balance
+INTO bal
+FROM Customers
+WHERE CustomerID=id;
+
+RETURN bal;
+
+END;
+
+END CustomerManagement;
+/
+```
+
+---
+
+## Scenario 2: EmployeeManagement
+
+```sql
+CREATE OR REPLACE PACKAGE EmployeeManagement IS
+
+PROCEDURE HireEmployee(
+id NUMBER,
+name VARCHAR2,
+pos VARCHAR2,
+salary NUMBER,
+dept VARCHAR2
+);
+
+PROCEDURE UpdateEmployee(
+id NUMBER,
+salary NUMBER
+);
+
+FUNCTION AnnualSalary(
+id NUMBER
+)
+RETURN NUMBER;
+
+END;
+/
+```
+
+```sql
+CREATE OR REPLACE PACKAGE BODY EmployeeManagement IS
+
+PROCEDURE HireEmployee(id NUMBER,name VARCHAR2,pos VARCHAR2,salary NUMBER,dept VARCHAR2)
+
+IS
+
+BEGIN
+
+INSERT INTO Employees
+VALUES(id,name,pos,salary,dept,SYSDATE);
+
+END;
+
+PROCEDURE UpdateEmployee(id NUMBER,salary NUMBER)
+
+IS
+
+BEGIN
+
+UPDATE Employees
+SET Salary=salary
+WHERE EmployeeID=id;
+
+END;
+
+FUNCTION AnnualSalary(id NUMBER)
+
+RETURN NUMBER
+
+IS
+
+sal NUMBER;
+
+BEGIN
+
+SELECT Salary
+INTO sal
+FROM Employees
+WHERE EmployeeID=id;
+
+RETURN sal*12;
+
+END;
+
+END;
+/
+```
+
+---
+
+## Scenario 3: AccountOperations
+
+```sql
+CREATE OR REPLACE PACKAGE AccountOperations IS
+
+PROCEDURE OpenAccount(
+acc NUMBER,
+cust NUMBER,
+type VARCHAR2,
+bal NUMBER
+);
+
+PROCEDURE CloseAccount(
+acc NUMBER
+);
+
+FUNCTION TotalBalance(
+cust NUMBER
+)
+RETURN NUMBER;
+
+END;
+/
+```
+
+```sql
+CREATE OR REPLACE PACKAGE BODY AccountOperations IS
+
+PROCEDURE OpenAccount(acc NUMBER,cust NUMBER,type VARCHAR2,bal NUMBER)
+
+IS
+
+BEGIN
+
+INSERT INTO Accounts
+VALUES(acc,cust,type,bal,SYSDATE);
+
+END;
+
+PROCEDURE CloseAccount(acc NUMBER)
+
+IS
+
+BEGIN
+
+DELETE FROM Accounts
+WHERE AccountID=acc;
+
+END;
+
+FUNCTION TotalBalance(cust NUMBER)
+
+RETURN NUMBER
+
+IS
+
+bal NUMBER;
+
+BEGIN
+
+SELECT SUM(Balance)
+INTO bal
+FROM Accounts
+WHERE CustomerID=cust;
+
+RETURN bal;
+
+END;
+
+END;
+/
+```
+
+These PL/SQL solutions are compatible with the provided schema (with the addition of the `IsVIP` column for Exercise 1, Scenario 2, and the `AuditLog` table for Exercise 5, Scenario 2).
