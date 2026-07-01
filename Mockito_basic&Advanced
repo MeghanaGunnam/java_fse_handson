@@ -1,0 +1,601 @@
+
+
+# Exercise 1: Mocking and Stubbing
+
+## ExternalApi.java
+
+```java
+public interface ExternalApi {
+
+    String getData();
+
+}
+```
+
+---
+
+## MyService.java
+
+```java
+public class MyService {
+
+    private ExternalApi api;
+
+    public MyService(ExternalApi api){
+
+        this.api=api;
+
+    }
+
+    public String fetchData(){
+
+        return api.getData();
+
+    }
+
+}
+```
+
+---
+
+## MyServiceTest.java
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class MyServiceTest {
+
+    @Test
+
+    void testExternalApi(){
+
+        ExternalApi mockApi=mock(ExternalApi.class);
+
+        when(mockApi.getData()).thenReturn("Mock Data");
+
+        MyService service=new MyService(mockApi);
+
+        String result=service.fetchData();
+
+        assertEquals("Mock Data",result);
+
+    }
+
+}
+```
+
+---
+
+# Exercise 2: Verifying Interactions
+
+```java
+import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.Test;
+
+public class MyServiceTest {
+
+    @Test
+
+    void testVerifyInteraction(){
+
+        ExternalApi mockApi=mock(ExternalApi.class);
+
+        when(mockApi.getData()).thenReturn("Mock Data");
+
+        MyService service=new MyService(mockApi);
+
+        service.fetchData();
+
+        verify(mockApi).getData();
+
+    }
+
+}
+```
+
+---
+
+# Exercise 3: Argument Matching
+
+## Calculator.java
+
+```java
+public interface Calculator {
+
+    int add(int a,int b);
+
+}
+```
+
+---
+
+## CalculatorService.java
+
+```java
+public class CalculatorService {
+
+    private Calculator calculator;
+
+    public CalculatorService(Calculator calculator){
+
+        this.calculator=calculator;
+
+    }
+
+    public int calculate(){
+
+        return calculator.add(10,20);
+
+    }
+
+}
+```
+
+---
+
+## CalculatorServiceTest.java
+
+```java
+import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.Test;
+
+public class CalculatorServiceTest {
+
+    @Test
+
+    void testArgumentMatcher(){
+
+        Calculator mockCalculator=mock(Calculator.class);
+
+        when(mockCalculator.add(anyInt(),anyInt())).thenReturn(30);
+
+        CalculatorService service=new CalculatorService(mockCalculator);
+
+        service.calculate();
+
+        verify(mockCalculator).add(anyInt(),anyInt());
+
+    }
+
+}
+```
+
+---
+
+# Exercise 4: Handling Void Methods
+
+## Printer.java
+
+```java
+public interface Printer {
+
+    void print();
+
+}
+```
+
+---
+
+## PrinterTest.java
+
+```java
+import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.Test;
+
+public class PrinterTest {
+
+    @Test
+
+    void testVoidMethod(){
+
+        Printer printer=mock(Printer.class);
+
+        doNothing().when(printer).print();
+
+        printer.print();
+
+        verify(printer).print();
+
+    }
+
+}
+```
+
+---
+
+# Exercise 5: Multiple Return Values
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class MultipleReturnTest {
+
+    @Test
+
+    void testMultipleReturns(){
+
+        ExternalApi api=mock(ExternalApi.class);
+
+        when(api.getData())
+
+                .thenReturn("First")
+
+                .thenReturn("Second");
+
+        assertEquals("First",api.getData());
+
+        assertEquals("Second",api.getData());
+
+    }
+
+}
+```
+
+---
+
+# Exercise 6: Verifying Interaction Order
+
+## UserService.java
+
+```java
+public class UserService {
+
+    private ExternalApi api;
+
+    public UserService(ExternalApi api){
+
+        this.api=api;
+
+    }
+
+    public void process(){
+
+        api.getData();
+
+        api.getData();
+
+    }
+
+}
+```
+
+---
+
+## UserServiceTest.java
+
+```java
+import static org.mockito.Mockito.*;
+
+import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
+
+public class UserServiceTest {
+
+    @Test
+
+    void testInteractionOrder(){
+
+        ExternalApi api=mock(ExternalApi.class);
+
+        UserService service=new UserService(api);
+
+        service.process();
+
+        InOrder order=inOrder(api);
+
+        order.verify(api).getData();
+
+        order.verify(api).getData();
+
+    }
+
+}
+```
+
+---
+
+# Exercise 7: Void Method with Exception
+
+## Payment.java
+
+```java
+public interface Payment {
+
+    void pay();
+
+}
+```
+
+---
+
+## PaymentTest.java
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class PaymentTest {
+
+    @Test
+
+    void testVoidException(){
+
+        Payment payment=mock(Payment.class);
+
+        doThrow(new RuntimeException("Payment Failed"))
+
+                .when(payment)
+
+                .pay();
+
+        assertThrows(RuntimeException.class,
+
+                ()->payment.pay());
+
+    }
+
+}
+```
+
+---
+
+# Advanced Mockito Exercises
+
+# Exercise 1: Mock Database Repository
+
+## Repository.java
+
+```java
+public interface Repository {
+
+    String getData();
+
+}
+```
+
+---
+
+## Service.java
+
+```java
+public class Service {
+
+    private Repository repository;
+
+    public Service(Repository repository){
+
+        this.repository=repository;
+
+    }
+
+    public String processData(){
+
+        return "Processed "+repository.getData();
+
+    }
+
+}
+```
+
+---
+
+## ServiceTest.java
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class ServiceTest {
+
+    @Test
+
+    void testRepository(){
+
+        Repository repository=mock(Repository.class);
+
+        when(repository.getData())
+
+                .thenReturn("Mock Data");
+
+        Service service=new Service(repository);
+
+        assertEquals(
+
+                "Processed Mock Data",
+
+                service.processData()
+
+        );
+
+    }
+
+}
+```
+
+---
+
+# Exercise 2: Mock REST API
+
+## RestClient.java
+
+```java
+public interface RestClient {
+
+    String getResponse();
+
+}
+```
+
+---
+
+## ApiService.java
+
+```java
+public class ApiService {
+
+    private RestClient client;
+
+    public ApiService(RestClient client){
+
+        this.client=client;
+
+    }
+
+    public String fetchData(){
+
+        return "Fetched "+client.getResponse();
+
+    }
+
+}
+```
+
+---
+
+## ApiServiceTest.java
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class ApiServiceTest {
+
+    @Test
+
+    void testApi(){
+
+        RestClient client=mock(RestClient.class);
+
+        when(client.getResponse())
+
+                .thenReturn("Mock Response");
+
+        ApiService api=new ApiService(client);
+
+        assertEquals(
+
+                "Fetched Mock Response",
+
+                api.fetchData()
+
+        );
+
+    }
+
+}
+```
+
+---
+
+# Exercise 3: Mock File I/O
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class FileServiceTest {
+
+    @Test
+
+    void testFileIO(){
+
+        FileReader reader=mock(FileReader.class);
+
+        FileWriter writer=mock(FileWriter.class);
+
+        when(reader.read())
+
+                .thenReturn("Mock File");
+
+    }
+
+}
+```
+
+---
+
+# Exercise 4: Mock Network
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class NetworkServiceTest {
+
+    @Test
+
+    void testNetwork(){
+
+        NetworkClient client=mock(NetworkClient.class);
+
+        when(client.connect())
+
+                .thenReturn("Mock Connection");
+
+        assertEquals(
+
+                "Mock Connection",
+
+                client.connect()
+
+        );
+
+    }
+
+}
+```
+
+---
+
+# Exercise 5: Multiple Return Values
+
+```java
+import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class MultiReturnServiceTest {
+
+    @Test
+
+    void testMultipleReturn(){
+
+        Repository repository=mock(Repository.class);
+
+        when(repository.getData())
+
+                .thenReturn("First Data")
+
+                .thenReturn("Second Data");
+
+        assertEquals("First Data",
+
+                repository.getData());
+
+        assertEquals("Second Data",
+
+                repository.getData());
+
+    }
+
+}
