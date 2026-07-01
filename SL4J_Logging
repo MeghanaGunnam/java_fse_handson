@@ -1,0 +1,172 @@
+
+# Exercise 1: Logging Error Messages and Warning Levels
+
+## LoggingExample.java
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LoggingExample {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(LoggingExample.class);
+
+    public static void main(String[] args) {
+
+        logger.error("This is an error message");
+
+        logger.warn("This is a warning message");
+
+    }
+}
+```
+
+---
+
+# Exercise 2: Parameterized Logging
+
+## ParameterizedLoggingExample.java
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class ParameterizedLoggingExample {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(ParameterizedLoggingExample.class);
+
+    public static void main(String[] args) {
+
+        String name = "John";
+        int age = 25;
+        double salary = 50000;
+
+        logger.info("Employee Name: {}", name);
+
+        logger.info("Employee Age: {}", age);
+
+        logger.info("Employee Salary: {}", salary);
+
+        logger.info(
+                "Employee Details -> Name: {}, Age: {}, Salary: {}",
+                name,
+                age,
+                salary
+        );
+    }
+}
+```
+
+### Output
+
+```text
+INFO Employee Name: John
+INFO Employee Age: 25
+INFO Employee Salary: 50000.0
+INFO Employee Details -> Name: John, Age: 25, Salary: 50000.0
+```
+
+---
+
+# Exercise 3: Using Different Appenders
+
+## Step 1: Create `logback.xml`
+
+Place this file inside:
+
+```text
+src/main/resources/logback.xml
+```
+
+```xml
+<configuration>
+
+    <!-- Console Appender -->
+    <appender name="console"
+              class="ch.qos.logback.core.ConsoleAppender">
+
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+
+    </appender>
+
+    <!-- File Appender -->
+    <appender name="file"
+              class="ch.qos.logback.core.FileAppender">
+
+        <file>app.log</file>
+
+        <encoder>
+            <pattern>
+                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+            </pattern>
+        </encoder>
+
+    </appender>
+
+    <root level="debug">
+
+        <appender-ref ref="console"/>
+
+        <appender-ref ref="file"/>
+
+    </root>
+
+</configuration>
+```
+
+---
+
+## LoggingWithAppenderExample.java
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class LoggingWithAppenderExample {
+
+    private static final Logger logger =
+            LoggerFactory.getLogger(LoggingWithAppenderExample.class);
+
+    public static void main(String[] args) {
+
+        logger.trace("Trace Message");
+
+        logger.debug("Debug Message");
+
+        logger.info("Information Message");
+
+        logger.warn("Warning Message");
+
+        logger.error("Error Message");
+
+    }
+}
+```
+
+### Output
+
+**Console**
+
+```text
+10:20:45 INFO  LoggingWithAppenderExample - Information Message
+10:20:45 WARN  LoggingWithAppenderExample - Warning Message
+10:20:45 ERROR LoggingWithAppenderExample - Error Message
+```
+
+**File (app.log)**
+
+```text
+10:20:45 INFO  LoggingWithAppenderExample - Information Message
+10:20:45 WARN  LoggingWithAppenderExample - Warning Message
+10:20:45 ERROR LoggingWithAppenderExample - Error Message
+```
+
+---
+
+
