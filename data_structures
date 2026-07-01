@@ -1,0 +1,597 @@
+These are concise, assignment-ready answers for all 7 exercises.
+
+---
+
+# Exercise 1: Inventory Management System
+
+## 1. Understand the Problem
+
+### Why are Data Structures and Algorithms important?
+
+Data structures and algorithms help store, organize, and retrieve inventory data efficiently. In a warehouse containing thousands of products, efficient operations reduce processing time and improve system performance.
+
+### Suitable Data Structures
+
+* **ArrayList** – Good for sequential storage and traversal.
+* **HashMap** – Best for fast searching using Product ID.
+* **TreeMap** – Keeps products sorted by key.
+
+**Best Choice:** `HashMap<Integer, Product>` because product IDs are unique and searching is very fast.
+
+---
+
+## 2. Setup
+
+Create a Java Project named:
+
+```
+InventoryManagementSystem
+```
+
+---
+
+## 3. Implementation
+
+### Product Class
+
+```java
+class Product {
+    int productId;
+    String productName;
+    int quantity;
+    double price;
+
+    Product(int productId, String productName, int quantity, double price) {
+        this.productId = productId;
+        this.productName = productName;
+        this.quantity = quantity;
+        this.price = price;
+    }
+
+    public String toString() {
+        return productId + " " + productName + " " + quantity + " " + price;
+    }
+}
+```
+
+### Inventory Management
+
+```java
+import java.util.HashMap;
+
+public class InventoryManagement {
+
+    HashMap<Integer, Product> inventory = new HashMap<>();
+
+    public void addProduct(Product p) {
+        inventory.put(p.productId, p);
+    }
+
+    public void updateProduct(int id, int quantity) {
+        if(inventory.containsKey(id)) {
+            inventory.get(id).quantity = quantity;
+        }
+    }
+
+    public void deleteProduct(int id) {
+        inventory.remove(id);
+    }
+
+    public void displayProducts() {
+        inventory.values().forEach(System.out::println);
+    }
+
+    public static void main(String[] args) {
+
+        InventoryManagement obj = new InventoryManagement();
+
+        obj.addProduct(new Product(1,"Laptop",20,60000));
+        obj.addProduct(new Product(2,"Mouse",100,500));
+
+        obj.updateProduct(2,120);
+
+        obj.deleteProduct(1);
+
+        obj.displayProducts();
+    }
+}
+```
+
+---
+
+## 4. Analysis
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| Add       | O(1)            |
+| Update    | O(1)            |
+| Delete    | O(1)            |
+
+### Optimization
+
+* Use HashMap instead of ArrayList.
+* Use Product ID as the key.
+* Avoid linear searching.
+
+---
+
+# Exercise 2: E-commerce Platform Search Function
+
+## 1. Understand Asymptotic Notation
+
+### Big O Notation
+
+Big O notation measures the efficiency of an algorithm as the input size grows.
+
+Examples:
+
+* O(1) – Constant
+* O(log n) – Logarithmic
+* O(n) – Linear
+* O(n²) – Quadratic
+
+### Search Cases
+
+* **Best Case:** Item found immediately.
+* **Average Case:** Item found in the middle.
+* **Worst Case:** Item found at the end or not found.
+
+---
+
+## 2. Setup
+
+```java
+class Product {
+
+    int productId;
+    String productName;
+    String category;
+
+    Product(int id,String name,String category){
+        this.productId=id;
+        this.productName=name;
+        this.category=category;
+    }
+}
+```
+
+---
+
+## 3. Implementation
+
+### Linear Search
+
+```java
+public static int linearSearch(Product arr[], String key){
+
+    for(int i=0;i<arr.length;i++){
+
+        if(arr[i].productName.equals(key))
+            return i;
+    }
+
+    return -1;
+}
+```
+
+### Binary Search
+
+```java
+public static int binarySearch(Product arr[], String key){
+
+    int low=0;
+    int high=arr.length-1;
+
+    while(low<=high){
+
+        int mid=(low+high)/2;
+
+        int compare=arr[mid].productName.compareTo(key);
+
+        if(compare==0)
+            return mid;
+
+        else if(compare<0)
+            low=mid+1;
+
+        else
+            high=mid-1;
+    }
+
+    return -1;
+}
+```
+
+---
+
+## 4. Analysis
+
+| Algorithm     | Time Complexity |
+| ------------- | --------------- |
+| Linear Search | O(n)            |
+| Binary Search | O(log n)        |
+
+### Which is Better?
+
+Binary Search is better because it searches much faster for large sorted datasets.
+
+---
+
+# Exercise 3: Sorting Customer Orders
+
+## 1. Sorting Algorithms
+
+### Bubble Sort
+
+Repeatedly swaps adjacent elements.
+
+Time Complexity:
+
+O(n²)
+
+---
+
+### Insertion Sort
+
+Builds the sorted list one element at a time.
+
+Time Complexity:
+
+O(n²)
+
+---
+
+### Quick Sort
+
+Uses divide-and-conquer.
+
+Average Complexity:
+
+O(n log n)
+
+---
+
+### Merge Sort
+
+Splits and merges arrays.
+
+Complexity:
+
+O(n log n)
+
+---
+
+## 2. Setup
+
+```java
+class Order{
+
+    int orderId;
+    String customerName;
+    double totalPrice;
+
+    Order(int id,String name,double price){
+
+        orderId=id;
+        customerName=name;
+        totalPrice=price;
+    }
+}
+```
+
+---
+
+## 3. Implementation
+
+### Bubble Sort
+
+```java
+for(int i=0;i<n-1;i++){
+
+    for(int j=0;j<n-i-1;j++){
+
+        if(order[j].totalPrice>order[j+1].totalPrice){
+
+            Order temp=order[j];
+            order[j]=order[j+1];
+            order[j+1]=temp;
+        }
+    }
+}
+```
+
+---
+
+### Quick Sort
+
+```java
+void quickSort(Order arr[], int low, int high){
+
+    if(low<high){
+
+        int pi=partition(arr,low,high);
+
+        quickSort(arr,low,pi-1);
+
+        quickSort(arr,pi+1,high);
+    }
+}
+```
+
+---
+
+## 4. Analysis
+
+| Algorithm   | Time Complexity |
+| ----------- | --------------- |
+| Bubble Sort | O(n²)           |
+| Quick Sort  | O(n log n)      |
+
+### Why Quick Sort?
+
+* Faster
+* Suitable for large datasets
+* Widely used in real applications
+
+---
+
+# Exercise 4: Employee Management System
+
+## 1. Array Representation
+
+Arrays store elements in **contiguous memory locations**.
+
+### Advantages
+
+* Fast indexing
+* Less memory overhead
+* Easy traversal
+
+---
+
+## 2. Setup
+
+```java
+class Employee{
+
+    int employeeId;
+    String name;
+    String position;
+    double salary;
+}
+```
+
+---
+
+## 3. Implementation
+
+Operations:
+
+* Add Employee
+* Search Employee
+* Traverse Employees
+* Delete Employee
+
+---
+
+## 4. Analysis
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| Add       | O(1)            |
+| Search    | O(n)            |
+| Traverse  | O(n)            |
+| Delete    | O(n)            |
+
+### Limitations
+
+* Fixed size
+* Expensive insertion/deletion
+* Memory wastage
+
+### When to Use Arrays
+
+* Fixed-size data
+* Frequent indexing
+
+---
+
+# Exercise 5: Task Management System
+
+## 1. Linked Lists
+
+### Singly Linked List
+
+Each node points to the next node.
+
+### Doubly Linked List
+
+Each node stores:
+
+* Previous pointer
+* Next pointer
+
+---
+
+## 2. Setup
+
+```java
+class Task{
+
+    int taskId;
+    String taskName;
+    String status;
+}
+```
+
+---
+
+## 3. Implementation
+
+Operations:
+
+* Add Task
+* Search Task
+* Traverse Tasks
+* Delete Task
+
+Implemented using **Singly Linked List**.
+
+---
+
+## 4. Analysis
+
+| Operation | Time Complexity |
+| --------- | --------------- |
+| Add       | O(1)            |
+| Search    | O(n)            |
+| Traverse  | O(n)            |
+| Delete    | O(n)            |
+
+### Advantages over Arrays
+
+* Dynamic size
+* Easy insertion
+* Easy deletion
+* No memory wastage due to fixed size
+
+---
+
+# Exercise 6: Library Management System
+
+## 1. Search Algorithms
+
+### Linear Search
+
+Checks each book one by one.
+
+Complexity:
+
+O(n)
+
+---
+
+### Binary Search
+
+Works only on sorted data.
+
+Complexity:
+
+O(log n)
+
+---
+
+## 2. Setup
+
+```java
+class Book{
+
+    int bookId;
+    String title;
+    String author;
+}
+```
+
+---
+
+## 3. Implementation
+
+Use:
+
+* Linear Search
+* Binary Search
+
+to search books by title.
+
+---
+
+## 4. Analysis
+
+| Algorithm     | Complexity |
+| ------------- | ---------- |
+| Linear Search | O(n)       |
+| Binary Search | O(log n)   |
+
+### When to Use
+
+**Linear Search**
+
+* Small datasets
+* Unsorted data
+
+**Binary Search**
+
+* Large datasets
+* Sorted data
+
+---
+
+# Exercise 7: Financial Forecasting
+
+## 1. Understand Recursion
+
+Recursion is a technique where a method calls itself until a base condition is met.
+
+Example:
+
+```
+Factorial
+
+5!
+
+↓
+
+5 × 4 × 3 × 2 × 1
+```
+
+---
+
+## 2. Setup
+
+Create a recursive method to calculate future value.
+
+---
+
+## 3. Implementation
+
+```java
+public static double futureValue(double presentValue,double growthRate,int years){
+
+    if(years==0)
+        return presentValue;
+
+    return futureValue(presentValue*(1+growthRate),growthRate,years-1);
+}
+```
+
+Example:
+
+```
+Present Value = 1000
+
+Growth Rate = 10%
+
+Years = 3
+
+Future Value = 1331
+```
+
+---
+
+## 4. Analysis
+
+### Time Complexity
+
+```
+O(n)
+```
+
+because one recursive call is made for each year.
+
+### Optimization
+
+* Use **Memoization** to store previously computed values.
+* Use **Dynamic Programming** for repeated calculations.
+* Use an **iterative approach** to avoid recursion overhead and stack overflow for large inputs.
+
+
