@@ -1,0 +1,470 @@
+# Exercise 1: Basic Unit Test for a Service Method
+
+## CalculatorService.java
+
+```java
+@Service
+public class CalculatorService {
+
+    public int add(int a, int b) {
+        return a + b;
+    }
+
+}
+```
+
+---
+
+## CalculatorServiceTest.java
+
+```java
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CalculatorServiceTest {
+
+    CalculatorService service = new CalculatorService();
+
+    @Test
+    void testAdd() {
+
+        assertEquals(10, service.add(4,6));
+
+    }
+
+}
+```
+
+---
+
+# Exercise 2: Mocking Repository in Service Test
+
+## UserServiceTest.java
+
+```java
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class UserServiceTest {
+
+    @Mock
+    UserRepository repository;
+
+    @InjectMocks
+    UserService service;
+
+    @Test
+    void testGetUserById() {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("John");
+
+        when(repository.findById(1L))
+                .thenReturn(Optional.of(user));
+
+        User result = service.getUserById(1L);
+
+        assertEquals("John", result.getName());
+
+    }
+
+}
+```
+
+---
+
+# Exercise 3: Test REST Controller using MockMvc
+
+```java
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(UserController.class)
+
+public class UserControllerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockBean
+    UserService service;
+
+    @Test
+    void testGetUser() throws Exception {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("John");
+
+        when(service.getUserById(1L))
+                .thenReturn(user);
+
+        mockMvc.perform(get("/users/1"))
+
+                .andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.name")
+                        .value("John"));
+
+    }
+
+}
+```
+
+---
+
+# Exercise 4: Integration Test
+
+```java
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@SpringBootTest
+
+public class IntegrationTest {
+
+    @Autowired
+    UserService service;
+
+    @Autowired
+    UserRepository repository;
+
+    @Test
+    void testIntegration() {
+
+        User user = new User();
+
+        user.setId(1L);
+        user.setName("Alice");
+
+        repository.save(user);
+
+        User result = service.getUserById(1L);
+
+        assertEquals("Alice", result.getName());
+
+    }
+
+}
+```
+
+---
+
+# Exercise 5: Test POST Controller
+
+```java
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.test.web.servlet.MockMvc;
+
+import static org.mockito.Mockito.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(UserController.class)
+
+public class UserControllerPostTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @Autowired
+    ObjectMapper mapper;
+
+    @MockBean
+    UserService service;
+
+    @Test
+    void testCreateUser() throws Exception {
+
+        User user = new User();
+
+        user.setId(1L);
+        user.setName("John");
+
+        when(service.saveUser(any(User.class)))
+                .thenReturn(user);
+
+        mockMvc.perform(
+
+                post("/users")
+
+                        .contentType("application/json")
+
+                        .content(mapper.writeValueAsString(user))
+
+        )
+
+                .andExpect(status().isOk())
+
+                .andExpect(jsonPath("$.name")
+                        .value("John"));
+
+    }
+
+}
+```
+
+---
+
+# Exercise 6: Test Service Exception Handling
+
+```java
+import org.junit.jupiter.api.Test;
+
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+public class UserServiceExceptionTest {
+
+    @Test
+    void testMissingUser() {
+
+        UserRepository repository = mock(UserRepository.class);
+
+        UserService service = new UserService();
+
+        service.userRepository = repository;
+
+        when(repository.findById(5L))
+
+                .thenReturn(Optional.empty());
+
+        assertNull(service.getUserById(5L));
+
+    }
+
+}
+```
+
+---
+
+# Exercise 7: Test Custom Repository Query
+
+Repository
+
+```java
+public interface UserRepository extends JpaRepository<User,Long>{
+
+    List<User> findByName(String name);
+
+}
+```
+
+---
+
+Repository Test
+
+```java
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+@DataJpaTest
+
+public class UserRepositoryTest {
+
+    @Autowired
+    UserRepository repository;
+
+    @Test
+    void testFindByName() {
+
+        User user = new User();
+
+        user.setName("David");
+
+        repository.save(user);
+
+        List<User> users =
+                repository.findByName("David");
+
+        assertEquals(1, users.size());
+
+    }
+
+}
+```
+
+---
+
+# Exercise 8: Test Controller Exception Handling
+
+## GlobalExceptionHandler
+
+```java
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+    @ExceptionHandler(NoSuchElementException.class)
+
+    public ResponseEntity<String> handleNotFound(
+
+            NoSuchElementException ex){
+
+        return ResponseEntity
+
+                .status(HttpStatus.NOT_FOUND)
+
+                .body("User not found");
+
+    }
+
+}
+```
+
+---
+
+## Test
+
+```java
+import org.junit.jupiter.api.Test;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+
+import org.springframework.boot.test.mock.mockito.MockBean;
+
+import org.springframework.context.annotation.Import;
+
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.util.NoSuchElementException;
+
+import static org.mockito.Mockito.*;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+@WebMvcTest(UserController.class)
+
+@Import(GlobalExceptionHandler.class)
+
+public class ExceptionHandlerTest {
+
+    @Autowired
+    MockMvc mockMvc;
+
+    @MockBean
+    UserService service;
+
+    @Test
+    void testExceptionHandler() throws Exception {
+
+        when(service.getUserById(100L))
+
+                .thenThrow(new NoSuchElementException());
+
+        mockMvc.perform(get("/users/100"))
+
+                .andExpect(status().isNotFound())
+
+                .andExpect(content()
+
+                        .string("User not found"));
+
+    }
+
+}
+```
+
+---
+
+# Exercise 9: Parameterized Test
+
+```java
+import org.junit.jupiter.params.ParameterizedTest;
+
+import org.junit.jupiter.params.provider.CsvSource;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class CalculatorParameterizedTest {
+
+    CalculatorService service =
+            new CalculatorService();
+
+    @ParameterizedTest
+
+    @CsvSource({
+
+            "2,3,5",
+
+            "10,5,15",
+
+            "100,200,300"
+
+    })
+
+    void testAdd(
+
+            int a,
+
+            int b,
+
+            int expected
+
+    ) {
+
+        assertEquals(
+
+                expected,
+
+                service.add(a,b)
+
+        );
+
+    }
+
+}
