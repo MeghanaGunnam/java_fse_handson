@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="d0b074e8-5025-4fa4-b5a5-66f19abffddd" name="Changes" comment="Added Exercise 1 spring and maven">
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/Exercise 1 spring and maven/.idea/vcs.xml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "MeghanaGunnam"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/MeghanaGunnam/java_fse_handson",
+    "accountId": "5806f238-155d-47a0-ab63-7bb2482cd2e9"
+  }
+}]]></component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="3GkM69Obd3rkWSMGX2qdtb9T0wr" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-2fc7cc6b9a17-intellij.indexing.shared.core-IU-253.30387.90" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="d0b074e8-5025-4fa4-b5a5-66f19abffddd" name="Changes" comment="" />
+      <created>1784510935534</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1784510935534</updated>
+    </task>
+    <task id="LOCAL-00001" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784513243043</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1784513243043</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784513695919</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1784513695919</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784513701088</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1784513701088</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784513811949</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1784513811950</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784513829858</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1784513829858</updated>
+    </task>
+    <task id="LOCAL-00006" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784513876984</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1784513876984</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784513879971</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1784513879971</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784514532550</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1784514532551</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784514601875</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1784514601878</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515887685</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515887686</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515888458</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515888458</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515895219</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515895219</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515896472</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515896472</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515898415</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515898415</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515899009</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515899009</updated>
+    </task>
+    <task id="LOCAL-00016" summary="Added Exercise 1  spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515899366</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515899366</updated>
+    </task>
+    <task id="LOCAL-00017" summary="Added Eercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515974236</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515974236</updated>
+    </task>
+    <task id="LOCAL-00018" summary="Added Exercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515979540</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515979540</updated>
+    </task>
+    <task id="LOCAL-00019" summary="Added Exercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515982959</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515982959</updated>
+    </task>
+    <task id="LOCAL-00020" summary="Added Exercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515983405</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515983405</updated>
+    </task>
+    <task id="LOCAL-00021" summary="Added Exercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515983735</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515983735</updated>
+    </task>
+    <task id="LOCAL-00022" summary="Added Exercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515984010</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515984010</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Added Exercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515985585</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515985585</updated>
+    </task>
+    <task id="LOCAL-00024" summary="Added Exercise 1 spring and maven">
+      <option name="closed" value="true" />
+      <created>1784515998437</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1784515998437</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Added Exercise 1  spring and maven" />
+    <MESSAGE value="Added Eercise 1 spring and maven" />
+    <MESSAGE value="Added Exercise 1 spring and maven" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added Exercise 1 spring and maven" />
+  </component>
+</project>
