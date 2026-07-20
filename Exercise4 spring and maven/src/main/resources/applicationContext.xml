@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans
+       https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean id="library"
+          class="com.library.model.Library">
+
+        <property name="books">
+            <list>
+                <value>Spring Framework</value>
+                <value>Java Programming</value>
+                <value>Data Structures</value>
+            </list>
+        </property>
+
+        <property name="authors">
+            <set>
+                <value>Rod Johnson</value>
+                <value>James Gosling</value>
+                <value>Robert Martin</value>
+            </set>
+        </property>
+
+        <property name="departments">
+            <map>
+                <entry key="CSE" value="Computer Science"/>
+                <entry key="ECE" value="Electronics"/>
+                <entry key="EEE" value="Electrical"/>
+            </map>
+        </property>
+
+        <property name="libraryInfo">
+            <props>
+                <prop key="Name">Central Library</prop>
+                <prop key="Location">Hyderabad</prop>
+                <prop key="Timing">9 AM - 6 PM</prop>
+            </props>
+        </property>
+
+    </bean>
+
+</beans>
