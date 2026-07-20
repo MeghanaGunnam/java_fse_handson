@@ -2,7 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d0b074e8-5025-4fa4-b5a5-66f19abffddd" name="Changes" comment="Added Exercise 1 spring and maven">
-      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/Exercise 1 spring and maven/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/src/main/java/com/library/LibraryManagementApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/src/main/java/com/library/repository/BookRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/src/main/java/com/library/service/BookService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Exercise 1 spring and maven/src/main/resources/applicationContext.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
