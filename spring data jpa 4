@@ -1,0 +1,306 @@
+# Exercise 4: Difference Between JPA, Hibernate and Spring Data JPA
+
+## Objective
+
+To understand the differences between JPA, Hibernate, and Spring Data JPA, and how they work together in a Spring Boot application.
+
+---
+
+# 1. JPA (Java Persistence API)
+
+JPA stands for **Java Persistence API**.
+
+It is a **Java specification** that defines a standard way to map Java objects to relational databases.
+
+JPA itself is **not a framework** and does not perform database operations. It only defines rules and interfaces that ORM frameworks must implement.
+
+### Features
+
+- Standard Java persistence specification
+- Uses annotations for object-relational mapping
+- Database independent
+- Supports CRUD operations
+- Uses EntityManager for database interaction
+
+### Common JPA Annotations
+
+- @Entity
+- @Table
+- @Id
+- @Column
+- @GeneratedValue
+- @OneToMany
+- @ManyToOne
+- @JoinColumn
+
+### Example
+
+```java
+@Entity
+@Table(name="country")
+public class Country {
+
+    @Id
+    @Column(name="co_code")
+    private String code;
+
+    @Column(name="co_name")
+    private String name;
+
+}
+```
+
+---
+
+# 2. Hibernate
+
+Hibernate is an **Object Relational Mapping (ORM) Framework**.
+
+It is one of the most popular implementations of the JPA specification.
+
+Hibernate converts Java objects into database records and database records back into Java objects.
+
+### Features
+
+- Implements JPA
+- Automatic SQL generation
+- Session management
+- Transaction management
+- Caching support
+- Lazy and eager loading
+- HQL (Hibernate Query Language)
+
+### Example
+
+```java
+Session session = sessionFactory.openSession();
+
+Transaction transaction = session.beginTransaction();
+
+Country country = session.get(Country.class, "IN");
+
+transaction.commit();
+
+session.close();
+```
+
+In Hibernate, developers manually manage sessions and transactions.
+
+---
+
+# 3. Spring Data JPA
+
+Spring Data JPA is a **Spring Framework module** built on top of JPA.
+
+It reduces boilerplate code by automatically generating repository implementations.
+
+Developers only need to create repository interfaces.
+
+### Features
+
+- Built on JPA
+- Automatic CRUD methods
+- Pagination
+- Sorting
+- Derived Query Methods
+- JPQL Support
+- Native SQL Support
+- Easy integration with Spring Boot
+
+### Example Repository
+
+```java
+@Repository
+public interface CountryRepository extends JpaRepository<Country,String>{
+
+}
+```
+
+Spring automatically provides methods like:
+
+```java
+findAll()
+
+findById()
+
+save()
+
+deleteById()
+
+count()
+
+existsById()
+```
+
+---
+
+# Example Service
+
+```java
+@Service
+public class CountryService {
+
+    @Autowired
+    CountryRepository repository;
+
+    public List<Country> getAllCountries(){
+
+        return repository.findAll();
+
+    }
+
+}
+```
+
+---
+
+# Comparison Table
+
+| Feature | JPA | Hibernate | Spring Data JPA |
+|----------|-----|-----------|-----------------|
+| Type | Specification | ORM Framework | Spring Module |
+| Developed By | Oracle | Hibernate Team | Spring Team |
+| Purpose | Defines persistence standards | Implements JPA | Simplifies database access |
+| Implementation | No | Yes | Uses JPA implementation |
+| CRUD Support | Through EntityManager | Through Session | Automatically provided |
+| SQL Generation | No | Yes | Yes |
+| Repository Support | No | No | Yes |
+| Boilerplate Code | Medium | High | Very Low |
+| Transaction Management | EntityManager | Hibernate Transaction | Spring Transaction |
+| Query Support | JPQL | HQL, JPQL | Derived Queries, JPQL, Native SQL |
+
+---
+
+# Architecture
+
+```
+Spring Boot Application
+            |
+            |
+            V
+     Spring Data JPA
+            |
+            |
+            V
+      JPA Specification
+            |
+            |
+            V
+ Hibernate Implementation
+            |
+            |
+            V
+      MySQL Database
+```
+
+---
+
+# Working Flow
+
+```
+User Request
+      |
+      V
+Controller
+      |
+      V
+Service
+      |
+      V
+Repository (Spring Data JPA)
+      |
+      V
+JPA
+      |
+      V
+Hibernate
+      |
+      V
+MySQL Database
+```
+
+---
+
+# Without Spring Data JPA
+
+```java
+EntityManager entityManager =
+entityManagerFactory.createEntityManager();
+
+entityManager.getTransaction().begin();
+
+Country country =
+entityManager.find(Country.class, "IN");
+
+entityManager.getTransaction().commit();
+
+entityManager.close();
+```
+
+Lots of boilerplate code is required.
+
+---
+
+# With Spring Data JPA
+
+```java
+Country country =
+repository.findById("IN").orElse(null);
+```
+
+Only one line of code is required.
+
+---
+
+# Advantages of JPA
+
+- Standard API
+- Database Independent
+- Reduces JDBC code
+- Supports Object Relational Mapping
+
+---
+
+# Advantages of Hibernate
+
+- Powerful ORM Framework
+- Automatic SQL generation
+- Caching support
+- Better performance
+- Supports HQL
+
+---
+
+# Advantages of Spring Data JPA
+
+- Minimal coding
+- Automatic CRUD methods
+- Pagination
+- Sorting
+- Custom Query Methods
+- Easy Spring Boot integration
+- Faster development
+
+---
+
+# Conclusion
+
+- **JPA** is a specification that defines persistence standards.
+- **Hibernate** is an ORM framework that implements JPA.
+- **Spring Data JPA** is a Spring module that simplifies data access using repository interfaces.
+
+The relationship is:
+
+```
+Spring Boot
+      ↓
+Spring Data JPA
+      ↓
+JPA
+      ↓
+Hibernate
+      ↓
+MySQL
+```
+
+In modern Spring Boot applications, developers generally use **Spring Data JPA** with **Hibernate** as the JPA implementation to build scalable and maintainable database-driven applications.
