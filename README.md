@@ -86,11 +86,12 @@ During this learning program the following skills were developed:
 
 To understand software design principles and implement reusable object-oriented design patterns.
 
-### Hands-ons Completed
+###Mandatory Hands-ons Completed
 
 ✔ Singleton Pattern
 
-✔ Factory Method Pattern
+✔ Factory Method Pattern 
+###And Additional hands-on also completed
 
 ### Concepts Learned
 
